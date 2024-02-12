@@ -10,7 +10,8 @@ from django.contrib.auth import views as auth_views
 from django.urls import reverse_lazy
 
 # Create your views here.
-
+a= 'abc'
+print(a)
 class UserRegisterView(View):
     form_class = RegisterForm
     template_name = 'accounts/register.html'
