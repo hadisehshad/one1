@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static%}
+
+{% block content %}
+
+
+    {% if news.image %}
+        <div class="card" style="width: 35rem;"><img src="{{ news.image.url }}" class="card-img-top" alt=""></div>
+        <br>
+
+    {% endif %}
+    <h4>{{ news.news_title }}</h4>
+    <p>{{ news.description }}</p>
+    <small>نویسنده:{{ news.register_user.name}} {{ news.register_user.family }}</small><br/>
+    <small>{{ news.news_updated|date:"d-m-Y"}}</small><br/><br/>
+    {% if request.user.is_admin %}
+    {% if request.user.email == news.register_user.email %}
+            <a href="{% url 'home:news_delete' news.id %}" class="btn btn-danger">حذف</a>
+            <a href="{% url 'home:news_update' news.id news.news_group.slug %}" class="btn btn-info">آپدیت</a>
+    {% endif %}
+    {% endif %}
+    <br/><br/>
+
+
+    {% if request.user.is_authenticated %}
+
+        <div align="left"><a href="{% url 'home:news_like' news.id category.slug %}" class="{% if can_like %} disabled {% endif %} btn btn-primary  col-md-2">Like  {{ news.likes_count }}</a>  <a href="{% url 'home:news_dislike' news.id category.slug %}" class="{% if can_dislike %} disabled {% endif %}  btn btn-primary  col-md-2">Dislike  {{ news.Dislikes_count }}</a>
+        </div>
+        <br/><hr/>
+
+
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="ارسال">
+        </form>
+    {% else %}
+        <p class="alert alert-danger">فقط کاربرانی که لاگین کردند می توانند کامنت بگذارند.</p>
+    {% endif %}
+    <br/><br>
+
+    {% for comment in comments %}
+        <div class="card bg-dark text-white" >
+            <p class="card-header">{{ comment.user.name }} {{ comment.user.family }} | {{ comment.created|timesince }}</p>
+        </div>
+            <div class="card"><p class="card-body">{{ comment.body }}</p>
+
+            {% if request.user.is_authenticated %}
+                <form action="{% url 'home:add_reply' news.id category.slug comment.id %}" method="post"   novalidate>
+                    {% csrf_token %}
+                    {{ reply_form.as_p }}
+                    <input type="submit" value="ارسال">
+                </form>
+            {% endif %}
+
+            {% with replies=comment.rcomments.all %}
+            {% for reply in replies %}
+                <p class="bg-secondary text-white p-2 m-1">{{ reply.user.name }} {{ reply.user.family }}<p/><p class="p-2 m-1">{{ reply.body }}</p>
+            {% endfor %}
+            {% endwith %}
+            </div><br/>
+    {% empty %}
+        <p class="card bg-dark text-white">نظرات خود را با ما در میان بگذارید..</p>
+    {% endfor %}
+
+
+{% endblock %}

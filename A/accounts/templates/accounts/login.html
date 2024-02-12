@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block content %}
+
+    <h5>برای وارد شدن اطلاعات زیر را کامل نمایید</h5><br>
+    <form action="" method="post" class="col-md-6" novalidate>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="ورود"><br><br>
+        <div>
+            <a class="btn btn-info" href="{% url 'accounts:reset_password' %}">فراموشی رمز عبور</a>
+        </div>
+    </form>
+{% endblock %}

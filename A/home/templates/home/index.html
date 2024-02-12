@@ -1,0 +1,14 @@
+{% extends 'base.html'%}
+
+{% block content %}
+    <h3 align="center">صفحه کاربران ادمین</h3><br><br>
+    <h5>کاربر گرامی! در صورت تمایل به تغییر خبر بر روی گزینه ی پروفایل کلیک کنید</h5><br/>
+    <hr><div align="rigth"><h6>اطلاعات کاربر</h6></div><hr>
+    <p>نام: {{ user.name }}</p>
+    <p>نام خانوادگی: {{ user.family }}</p>
+    <p>شماره موبایل: {{ user.phone_number }}</p>
+    <p>آدرس ایمیل: {{ user.email }}</p>
+    <p>نوع کاربری: {{ user.role_type}}     (1=ادمین ، 2=کاربرویژه ، 3= کاربر معمولی)</p>
+    <p>سابقه کاری: {{ user.work_experience }}</p>
+
+{% endblock %}

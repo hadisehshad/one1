@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <h5 class="text-center"> صفحه پروفایل {{ user.name }} {{ user.family }}</h5>
+
+    {% if request.user.email == user.email %}
+
+        <h6>برای افزودن یک خبر جدید بر روی ایجاد خبر کلیک کنید >>  <a href="{% url 'home:news_create' %}" class="btn btn-dark">ایجاد خبر </a></h6><hr/>
+{% endif %}
+
+    <div align="center"></div>
+    <div class="card" align="center">
+        {% for new in news %}
+
+                <div class="card" style="width: 18rem;">
+
+                {% if new.image %}
+                     <img src="{{ new.image.url }}" class="card-img-top">
+                {% endif %}
+
+
+                  <h4><span class="badge bg-secondary">{{new.news_group.name}}</span></h4>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ new.news_title}}</h5>
+                    <p class="card-text">{{ new.description|truncatewords:8 }}</p>
+                    <a href="{% url 'home:news_detail' new.id  new.news_group.slug %}" class="btn btn-primary">نمایش خبر</a>
+                  </div>
+                </div>
+               <br>
+
+        {% endfor %}
+    </div>
+{% endblock %}

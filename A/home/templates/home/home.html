@@ -1,0 +1,37 @@
+{% extends 'base.html'%}
+
+
+{% block extra_headers %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'home/css/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div align="center"><h3>سایت خبری به روز</h3></div>
+    <div class="card" align="center">
+
+       <div class="card" align="left" style="background-color:darkgray">
+           <form action="" method="get">
+                {{ form.as_p }}
+           </form>
+       </div>
+
+        {% for new in news %}
+
+                <div class="card" style="width: 18rem; display: inline-block;">
+                {% if new.image %}
+                   <img src="{{ new.image.url }}" class="card-img-top" alt="">
+                {% endif %}
+
+                  <h4><span class="badge bg-secondary">{{new.news_group.name}}</span></h4>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ new.news_title}}</h5>
+                    <p class="card-text">{{ new.description|truncatewords:8 }}</p>
+                    <a href="{% url 'home:news_detail' new.id  new.news_group.slug %}" class="btn btn-primary">نمایش خبر</a>
+                  </div>
+                </div>
+               <br>
+
+        {% endfor %}
+    </div>
+{% endblock %}
